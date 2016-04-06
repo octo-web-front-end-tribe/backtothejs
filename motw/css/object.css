@@ -1,0 +1,667 @@
+/* object.css */
+/*
+	Object detail page stylesheet.
+
+	This stuff resides under #object-details.
+*/
+
+#object-details {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	background: white;
+	border: 0;
+	padding: 80px;
+	width: 880px;
+	height: 460px;
+
+	margin-left: -520px;
+	margin-top: -310px;
+
+	transition: 0.5s;
+	z-index: 3;
+}
+
+#object-background {
+	background: rgba(102, 104, 93, 0.8);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 3;
+
+	cursor: pointer;
+
+	opacity: 0;
+	transition: 0.5s;
+}
+
+#object-background.visible {
+	opacity: 1;
+}
+
+#object-details .object-description {
+	display: inline-block;
+	box-sizing: border-box;
+	padding-right: 2px;
+	width: 307px;
+	height: 375px;
+	overflow: auto;
+	font-size: 13px;
+	font-weight: 400;
+	color: #66685D;
+}
+
+.object-description a {
+	color: black;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#object-details .object-description-scrollbar,
+#object-details .object-description-scrollbar svg
+{
+	display: inline-block;
+}
+
+#object-details h2 {
+	text-align: left;
+	width: 880px;
+	font-size: 18px;
+	text-transform: uppercase;
+	margin: 0;
+	color: #66685D;
+	padding-bottom: 16px;
+	margin-bottom: 24px;
+	border-bottom: 1px solid #0087BC;
+}
+
+#object-details h2 .object-title-text {
+	display: inline-block;
+	vertical-align: top;
+	width: 710px;
+}
+
+#object-details h3 {
+	margin: 0;
+	color: #66685D;
+	font-size: 14px;
+	padding-bottom: 8px;
+	margin-bottom: 8px;
+	border-bottom: 1px solid #0087BC;
+}
+
+#object-details > .object-content {
+	width: 880px;
+	white-space: nowrap;
+	border-bottom: 1px solid #0087BC;
+}
+
+#object-details .column {
+	white-space: normal;
+	text-align: left;
+	margin-right: 20px;
+	width: 307px;
+}
+
+#object-details .column.scrollable {
+	overflow-x: hidden;
+	overflow-y: auto;
+	height: 378px;
+}
+
+#object-details .column:nth-child(3) {
+	width: 227px;
+}
+
+#object-details {
+	text-align: center;
+}
+
+#object-details .share-buttons {
+	white-space: nowrap;
+	position: absolute;
+	top: 83px;
+	left: 808px;
+}
+
+#object-details .share-buttons > div {
+	margin-right: 5px;
+}
+
+#object-details.about .object-description h3 {
+	border-bottom: 0;
+	font-size: 13px;
+	padding-bottom: 0;
+	margin-top: 0px;
+	margin-bottom: 4px;
+}
+
+#object-details.about .object-description h3+p {
+	margin-top: 0;
+}
+
+#object-details.about .column.wide {
+	width: 547px;
+	margin-right: 0;
+}
+
+#object-details.about .column.wide svg {
+}
+
+#object-details.about .share-buttons {
+	top: 133px;
+	left: 742px;
+}
+
+#object-details.about .share-buttons h3 {
+	text-align: left;
+	font-size: 14px;
+	border-bottom: 1px solid #66685D;
+	margin-top: 8px;
+	margin-bottom: 12px;
+}
+
+#object-details.about .sidebar-video-box {
+	border: 1px solid #66685D;
+	padding: 10px;
+	margin-top: 90px;
+	width: 180px;
+	cursor: pointer;
+}
+
+#object-details.about .sidebar-video-box p {
+	color: #66685D;
+	text-align: center;
+	font-size: 21px;
+	font-weight: lighter;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+#object-details.about .sidebar-video {
+	width: 180px;
+	height: 100px;
+	background: url(../img/play-icon.svg) 50% 50% / 68px 68px no-repeat, url(../img/neil-macgregor-video.jpg) 0 0 / 100% 100% no-repeat, black;
+}
+
+#object-details .object-image {
+	cursor: -webkit-zoom-in;
+	text-align: center;
+}
+
+#object-details .object-image img {
+	max-width: 303px;
+	max-height: 303px;
+	border: 1px solid #dfe0de;
+}
+
+#object-details .object-audio {
+	width: 100%;
+	height: 80px;
+	position: relative;
+	margin-bottom: 20px;
+	cursor: pointer;
+}
+
+#object-details .object-audio img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+#object-details .object-audio:after {
+	position: absolute;
+	content: "";
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	transition: 0.3s;
+	pointer-events: none;
+	background: url(../img/play-icon.svg) 50% 50% / 44px 44px no-repeat, rgba(102,104,93,0.75);
+}
+
+#object-details .object-audio:hover:after {
+	opacity: 1;
+}
+
+#object-details .object-audio.playing:after {
+	opacity: 1;
+	background: url(../img/pause-icon.svg) 50% 50% / 44px 44px no-repeat, rgba(102,104,93,0.75);
+}
+
+#object-details .object-map {
+	width: 227px;
+	height: 80px;
+	position: relative;
+	background-color: black;
+	cursor: pointer;
+	margin-bottom: 16px;
+}
+
+#object-details #object-map-map,
+#object-details .object-map iframe,
+#object-details .object-map img
+{
+	pointer-events: none;
+	border: 0;
+	width: 100%;
+	height: 100%;
+}
+
+#object-details .object-map .object-map-tooltip {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	transition: 0.3s;
+	color: white;
+	text-align: center;
+	box-sizing: border-box;
+	padding-top: 21px;
+	font-size: 14px;
+	pointer-events: none;
+	background: rgba(102,104,93,0.9);
+}
+
+#object-details .object-map:hover .object-map-tooltip {
+	opacity: 1;
+}
+
+#object-details .object-video {
+	display: inline-block;
+	width: 100px;
+	height: 70px;
+	overflow:hidden;
+	position: relative;
+	cursor: pointer;
+	border: 1px solid #dfe0de;
+}
+
+#object-details .object-images {
+	white-space: nowrap;
+	font-size: 0;
+}
+
+#object-details .object-video .object-video-play-icon {
+	position: absolute;
+	content: "";
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 1;
+	transition: 0.3s;
+	pointer-events: none;
+	background: url(../img/play-icon.svg) 50% 50% / 44px 44px no-repeat;
+}
+
+#object-details .object-video:hover .object-video-play-icon {
+	opacity: 0;
+}
+
+#object-details .object-video .object-video-tooltip,
+#object-details .object-image-thumb .object-image-tooltip,
+#object-details .object-image-thumb .object-image-more
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	transition: 0.3s;
+	color: white;
+	text-align: center;
+	box-sizing: border-box;
+	padding-top: 15px;
+	font-size: 14px;
+	pointer-events: none;
+	background: rgba(102,104,93,0.9);
+	vertical-align: top;
+	line-height: 20px;
+}
+
+#object-details .object-image-thumb .object-image-more
+{
+	opacity: 1;
+	font-size: 30px;
+	line-height: 37px;
+	background: rgba(0,0,0,0.5);
+}
+
+#object-details .object-video:hover .object-video-tooltip,
+#object-details .object-image-thumb:hover .object-image-tooltip
+{
+	opacity: 1;
+}
+
+.object-video img {
+	width: 100%;
+}
+
+#object-details .object-image-thumb {
+	display: inline-block;
+	width: 100px;
+	height: 70px;
+	overflow:hidden;
+	position: relative;
+	cursor: pointer;
+	line-height: 0;
+	vertical-align: top;
+	border: 1px solid #dfe0de;
+}
+
+#object-details .object-image-thumb img {
+	width: 100%;
+	height: auto;
+	vertical-align: top;
+}
+
+#object-details .object-same-category {
+	white-space: nowrap;
+}
+
+.object-category-thumb {
+	display: inline-block;
+	vertical-align: top;
+	width: 72px;
+	height: 72px;
+	border: 1px solid #dfe0de;
+	cursor: pointer;
+	margin-right: 2px;
+	line-height: 0px;
+	overflow: hidden;
+	position: relative;
+}
+
+.object-category-thumb a {
+	display: block;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.object-category-thumb img {
+	vertical-align: top;
+	max-width: 100%;
+	max-height: 100%;
+	width: auto;
+	height: auto;
+}
+
+#object-details .share-buttons div {
+	opacity: 0.21;
+	transition: 0.3s;
+}
+
+#object-details .share-buttons div:hover {
+	opacity: 1;
+}
+
+#object-details .share-button-google {
+	background: url(../img/share-google-grey.svg) 0 0 / 100% 100% no-repeat;
+	width: 25px;
+	height: 16px;
+}
+
+#object-details .share-button-twitter {
+	background: url(../img/share-twitter-grey.svg) 0 0 / 100% 100% no-repeat;
+	width: 19px;
+	height: 16px;
+}
+
+#object-details .share-button-facebook {
+	background: url(../img/share-facebook-grey.svg) 0 0 / 100% 100% no-repeat;
+	width: 16px;
+	height: 16px;
+}
+
+#object-details .share-button-email {
+	background: url(../img/share-email-grey.svg) 0 0 / 100% 100% no-repeat;
+	width: 26px;
+	height: 16px;
+}
+
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(102,104,93,0.95);
+    z-index: 3;
+    text-align: center;
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition: 0.5s;
+}
+
+.overlay.visible {
+	opacity: 1;
+	pointer-events: all;
+}
+
+.overlay-content {
+	position: absolute;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	top: 0;
+	margin-top: 0px;
+}
+
+.overlay-content h2 {
+	text-transform: uppercase;
+	font-size: 18px;
+}
+
+.image-container {
+	position: relative;
+	display: inline-block;
+    width: -webkit-calc(100% - 50px);
+    width: calc(100% - 50px);
+    width: 100%;
+    height: -webkit-calc(100% - 100px);
+    height: calc(100% - 200px);
+    margin-bottom: 30px;
+}
+
+@-webkit-keyframes rotate {
+	0% { -webkit-transform: rotate(0deg); }
+	50% { -webkit-transform: rotate(180deg); }
+	100% { -webkit-transform: rotate(360deg); }
+}
+@-moz-keyframes rotate {
+	0% { -moz-transform: rotate(0deg); }
+	50% { -moz-transform: rotate(180deg); }
+	100% { -moz-transform: rotate(360deg); }
+}
+@-ms-keyframes rotate {
+	0% { -ms-transform: rotate(0deg); }
+	50% { -ms-transform: rotate(180deg); }
+	100% { -ms-transform: rotate(360deg); }
+}
+@keyframes rotate {
+	0% { transform: rotate(0deg); }
+	50% { transform: rotate(180deg); }
+	100% { transform: rotate(360deg); }
+}
+
+.image-container:after {
+	pointer-events: none;
+	opacity: 0;
+	transition: 0.5s;
+	content: "";
+	background: url('data:image/svg+xml;utf8,<svg width="38" height="38" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" stroke="#fff"><g fill="none" fill-rule="evenodd"><g transform="translate(1 1)" stroke-width="2"><circle stroke-opacity=".5" cx="18" cy="18" r="18"/><path d="M36 18c0-9.94-8.06-18-18-18"></path></g></g></svg>') 50% 50% / 50px no-repeat;
+	position: absolute;
+	left: 50%;
+	top: 100px;
+	margin-top: -25px;
+	margin-left: -25px;
+	width: 50px;
+	height: 50px;
+	-webkit-animation: rotate 1s infinite both linear;
+	animation: rotate 1s infinite both linear;
+}
+
+.image-container.loading:after {
+	opacity: 1;
+}
+
+.image-container img {
+	cursor: -webkit-zoom-in;
+	cursor: -moz-zoom-in;
+	cursor: zoom-in;
+	border: 8px solid black;
+}
+
+.image-container.zoomed-in img {
+	cursor: all-scroll;
+	cursor: -webkit-grab;
+	cursor: -moz-grab;
+	cursor: grab;
+}
+
+.image-container.zoomed-in img:active {
+	cursor: all-scroll;
+	cursor: -webkit-grabbing;
+	cursor: -moz-grabbing;
+	cursor: grabbing;
+}
+
+.image-container.zoomed-in img {
+	max-height: none;
+	max-width: none;
+	position: absolute;
+}
+
+.image-container img {
+	box-sizing: border-box;
+	max-width: 1030px;
+	max-height: 530px;
+
+	max-width: -webkit-calc(100%);
+	max-height: -webkit-calc(100%);
+	max-width: calc(100%);
+	max-height: calc(100%);
+
+	width: auto;
+	height: auto;
+	vertical-align: top;
+}
+
+.image-container iframe {
+	vertical-align: top;
+	border: 0;
+	width: 764px;
+	height: 430px;
+}
+
+.image-container .close-button {
+	left: auto;
+	right: 15px;
+	top: 15px;
+	background: url(../img/close-white.svg) 50% 50% / 27px 27px no-repeat;
+}
+
+
+.object-map-zoom-content,
+.object-video-zoom-content
+{
+	position: absolute;
+	width: 1040px;
+	height: 585px;
+	/*box-sizing: border-box;*/
+	/*padding: 10px;*/
+	/*background: white;*/
+	left: 50%;
+	top: 50%;
+	margin-top: -280px;
+	margin-left: -520px;
+}
+
+.object-map-zoom-content h2,
+.object-video-zoom-content h2
+{
+	text-transform: uppercase;
+	font-size: 18px;
+	margin-top: -40px;	
+}
+
+.object-map-zoom-content #object-map-zoom-map,
+.object-map-zoom-content iframe,
+.object-video-zoom-content iframe
+{
+	border: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.object-map-zoom-content .close-button,
+.object-video-zoom-content .close-button,
+.overlay.VIDEO .image-container .close-button
+{
+	left: auto;
+	top: 5px;
+	right: 5px;
+	width: 37px;
+	height: 37px;
+	background: url(../img/close.svg) 50% 50% / 27px 27px no-repeat, white;
+}
+
+.horizontal-arrows {
+	position: relative;
+	display: inline-block;
+	width: 108px;
+}
+
+.horizontal-arrows .left-arrow,
+.horizontal-arrows .right-arrow
+{
+	position: absolute;
+	top: 0px;
+	width: 28px;
+	height: 28px;
+	transition: 0.5s;
+
+	cursor: pointer;
+}
+
+.horizontal-arrows .left-arrow {
+	background: url(../img/left-arrow.svg) 0 0 / 100% 100% no-repeat;
+	left: 16px;
+}
+
+.horizontal-arrows .right-arrow {
+	background: url(../img/right-arrow.svg) 0 0 / 100% 100% no-repeat;
+	left: 64px;
+}
+
+.horizontal-arrows .left-arrow:hover,
+.horizontal-arrows .right-arrow:hover
+{
+	opacity: 0.5;
+}
+
+.horizontal-arrows .vertical-separator {
+	position: absolute;
+	left: 54px;
+	top: 0px;
+	height: 28px;
+	width: 1px;
+	background-color: white;
+}

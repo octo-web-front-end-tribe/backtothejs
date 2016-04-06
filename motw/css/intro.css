@@ -1,0 +1,215 @@
+@-webkit-keyframes fade-in-out {
+	0% { opacity: 1; }
+	50% { opacity: 1; }
+	100% { opacity: 0; }
+}
+@-moz-keyframes fade-in-out {
+	0% { opacity: 1; }
+	50% { opacity: 1; }
+	100% { opacity: 0; }
+}
+@-ms-keyframes fade-in-out {
+	0% { opacity: 1; }
+	50% { opacity: 1; }
+	100% { opacity: 0; }
+}
+@keyframes fade-in-out {
+	0% { opacity: 1; }
+	50% { opacity: 1; }
+	100% { opacity: 0; }
+}
+
+
+#intro-scroller {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	opacity: 1;
+	transition: 1s;
+
+	font-size: 36px;
+	text-align: center;
+}
+
+#intro-scroller .presents,
+.connected-history,
+#intro-scroller .loading-percentage
+{
+	font-size: 19px;
+}
+
+#main-title {
+	transition: 1s;
+}
+
+#main-title {
+	top: 45%;
+	opacity: 0;
+}
+
+#intro-scroller .british-museum-logo {
+	opacity: 0;
+	transition: opacity 1s 0s, top 1s 0s;
+
+	position: absolute;
+	left: 50%;
+	margin-left: -129px;
+	top: 50%;
+	margin-top: -110px;
+
+	background: url(../img/the-british-museum.svg) 0 0 / 100% no-repeat;
+	display: inline-block;
+	width: 258px;
+	height: 86px;
+}
+
+
+#intro-scroller .presents {
+	position: absolute;
+	left: 0;
+	top: 50%;
+	left: 50%;
+	margin-left: -42px;
+	margin-top: 0px;
+	width: 84px;
+	font-weight: lighter;
+
+	opacity: 0;
+	transition: opacity 1s 0.5s, top 1s 0s;
+}
+
+
+.intro-state-1 #main-title {
+	top: 50%;
+	margin-top: -170px;
+	opacity: 1;
+	transition: opacity 1s 1s, top 2s 0.2s;
+}
+
+.intro-state-1 #intro-scroller .british-museum-logo,
+.intro-state-2 #intro-scroller .british-museum-logo,
+.intro-state-3 #intro-scroller .british-museum-logo,
+.intro-state-4 #intro-scroller .british-museum-logo
+{
+	opacity: 0;
+	transition: 1s 0.2s;
+}
+
+.intro-state-1 #intro-scroller .presents,
+.intro-state-2 #intro-scroller .presents,
+.intro-state-3 #intro-scroller .presents,
+.intro-state-4 #intro-scroller .presents
+{
+	opacity: 0;
+	transition: 1s 0.0s;
+}
+
+.connected-history {
+	opacity: 0;
+}
+
+.intro-state-0 #intro-scroller .british-museum-logo,
+.intro-state-0 #intro-scroller .presents,
+
+.intro-state-1 #intro-scroller .loading-percentage
+{
+	opacity: 1;
+}
+
+.intro-state-1 .connected-history
+{
+	opacity: 1;
+}
+
+.intro-state-2 .connected-history,
+.intro-state-3 .connected-history
+{
+	opacity: 1;
+}
+
+.intro-state-4 .connected-history
+{
+	transition: 2s;
+	opacity: 0;
+}
+
+
+.connected-history,
+#intro-scroller .loading-percentage
+{
+	position: absolute;
+	left: 0;
+	width: 100%;
+	top: 150%;
+	margin-top: 120px;
+	text-transform: uppercase;
+	font-weight: lighter;
+	font-size: 16px;
+	letter-spacing: 2px;
+	transition: opacity 1s 2s, top 0s 0s;
+	line-height: 22px;
+}
+
+#intro-scroller .loading-percentage,
+.connected-history
+{
+	opacity: 0;
+}
+
+.connected-history
+{
+	top: 50%;
+	z-index: 100;
+	pointer-events: none;
+	text-align: center;
+	margin-top: 100px;
+}
+
+.connected-history p,
+#intro-scroller .loading-percentage p
+{
+	margin: 0;
+}
+
+#intro-scroller .loading-percentage {
+	margin-top: 160px;
+}
+
+
+.intro-state-1 #intro-scroller .loading-percentage
+{
+	top: 50%;
+	transition: opacity 1s 2.7s, top 0s 2.7s;
+}
+
+.intro-state-2 #intro-scroller .loading-percentage,
+.intro-state-3 #intro-scroller .loading-percentage,
+.intro-state-4 #intro-scroller .loading-percentage
+{
+	top: 50%;
+	transition: opacity 0.5s, top 2s;
+}
+
+.intro-state-2 #main-title,
+.intro-state-3 #main-title,
+.intro-state-4 #main-title
+{
+	top: 20px;
+	margin-top: 0px;
+	opacity: 1;
+	transition: top 0.15s 3.2s, margin-top 0.15s 3.2s, transform 0.15s 3.2s;
+	transform-origin: 50% 0;
+	transform: scale(0.71);
+}
+
+.intro-state-2 #intro-scroller,
+.intro-state-3 #intro-scroller,
+.intro-state-4 #intro-scroller
+{
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 1s 1s, top 1s 1s;
+}

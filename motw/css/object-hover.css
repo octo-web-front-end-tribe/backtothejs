@@ -1,0 +1,127 @@
+#object-hover-info {
+	position: absolute;
+	display: block;
+	text-decoration: none;
+	left: 50%;
+	top: 50%;
+	width: 416px;
+	min-height: 120px;
+	box-sizing: border-box;
+	z-index: 2;
+
+	padding-left: 19px;
+	padding-top: 10px;
+	padding-right: 19px;
+
+	padding-bottom: 14px;
+
+	color: white;
+
+	box-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+
+	pointer-events: none;
+	opacity: 0;
+	transition: 0.5s;
+
+	-webkit-animation: bounce 0.5s 1 both;
+	animation: bounce 0.5s 1 both;
+
+}
+
+@-webkit-keyframes bounce {
+	0% { 
+		transform: scale(1);
+	}
+	25% { 
+		transform: scale(1.1);
+	}
+	50% { 
+		transform: scale(0.95);
+	}
+	75% {
+		transform: scale(1.025);
+	}
+	100% { 
+		transform: scale(1);
+	}
+}
+
+@keyframes bounce {
+	0% { 
+		transform: scale(1);
+	}
+	25% { 
+		transform: scale(1.1);
+	}
+	50% { 
+		transform: scale(0.95);
+	}
+	75% {
+		transform: scale(1.025);
+	}
+	100% { 
+		transform: scale(1);
+	}
+}
+
+#object-hover-info:hover .object-hover-explore {
+	-webkit-animation: bounce 0.5s 1 both;
+	animation: bounce 0.5s 1 both;
+}
+
+#object-hover-info.visible {
+	opacity: 1;
+	pointer-events: all;
+}
+
+#object-hover-info > * {
+	vertical-align: top;
+}
+
+.object-hover-title {
+	font-family: 'Lato', sans-serif;
+	font-weight: normal;
+	font-size: 14px;
+	width: 202px;
+	border-bottom: 1px solid #ffffff;
+	padding-bottom: 4px;
+	margin-bottom: 3px;
+	text-transform: uppercase;
+}
+
+.object-hover-culture {
+	width: 202px;
+	font-family: 'Lato', sans-serif;
+	font-weight: normal;
+	font-size: 14px;
+	font-style: italic;
+	margin-bottom: 24px;
+}
+
+.object-hover-explore {
+	font-family: 'Lato', sans-serif;
+	font-weight: normal;
+	font-size: 14px;
+
+	display: inline-block;
+	text-transform: uppercase;
+
+	border: 1px solid white;
+	padding-left: 12px;
+	padding-right: 12px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+#object-hover-info .object-category-thumb {
+	width: 170px;
+	height: 100%;
+	position: absolute;
+	border: 0;
+	top: 0px;
+	right: 7px;
+}
+
+#object-hover-info .object-category-thumb img {
+	border: 0;
+}
