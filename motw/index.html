@@ -341,15 +341,6 @@
             <div id="down-arrow" ng-mousedown="moveCameraDown()" ng-touchstart="moveCameraDown()" ng-touchend="stopCameraMotion()" ng-touchcancel="stopCameraMotion()" title="Forward in time"></div>
         </div>
 
-        <div id="main-share" ng-click="toggle('menu', 'share')"></div>
-        <div id="main-share-buttons" class="share-buttons {{ menu === 'share' ? 'visible' : '' }}">
-            <h2>Share</h2>
-            <div class="share-button-email" ng-click="share('email')"></div>
-            <div class="share-button-google" ng-click="share('google')"></div>
-            <div class="share-button-twitter" ng-click="share('twitter')"></div>
-            <div class="share-button-facebook" ng-click="share('facebook')"></div>
-        </div>
-
         <div id="categories" class="visible">
             <div id="categories-logo" ng-click="toggle('category', null); categoriesVisible = !categoriesVisible" title="Explore by theme"></div>
             <ul id="categories-list">

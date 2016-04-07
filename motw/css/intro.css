@@ -200,9 +200,6 @@
 	top: 20px;
 	margin-top: 0px;
 	opacity: 1;
-	transition: top 0.15s 3.2s, margin-top 0.15s 3.2s, transform 0.15s 3.2s;
-	transform-origin: 50% 0;
-	transform: scale(0.71);
 }
 
 .intro-state-2 #intro-scroller,

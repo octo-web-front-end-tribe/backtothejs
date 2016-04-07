@@ -19,8 +19,6 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 
 	var self = this;
 
-	$scope.shouldSkipIntro = ($location.path().replace("/","") !== "");
-
 	var localStorage = window.localStorage || {};
 	$scope.cookieWarningVisible = localStorage.cookieWarningVisible === 'false' ? false : true;
 
@@ -55,29 +53,6 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 	$scope.dismissIntroHelp = function() {
 		$scope.scrollHelp = false;
 		localStorage.showIntroHelp = false;
-	};
-
-	$scope.share = function(mode){
-		var share_url = "";
-		if (mode === 'twitter') {
-			share_url = 'https://twitter.com/intent/tweet?text='+encodeURIComponent("I'm exploring #MuseumOfTheWorld by @britishmuseum and @GoogleUK. See how our history is connected ")+'&url=';
-		} else if (mode === "facebook") {
-			share_url = "https://www.facebook.com/sharer/sharer.php?u="; 
-		} else if (mode === 'google') {
-			share_url = "https://plus.google.com/share?url=";
-		} else if (mode === 'email') {
-			share_url = "mailto:info@example.com?subject=Museum%20of%20the%20World&body="+encodeURIComponent("I'm exploring #MuseumOfTheWorld by @britishmuseum and @GoogleUK. See how our history is connected ");
-		} else {
-			return;
-		}
-		share_url += encodeURIComponent($location.absUrl());
-		var win = window.open(share_url, 'Share this', 'width=500,height=350');			
-    ga('send', {
-      hitType: 'social',
-      socialNetwork: mode,
-      socialAction: 'like',
-      socialTarget: $location.absUrl() 
-    });
 	};
 
 	$scope.toggle = function(key, value) {
@@ -174,7 +149,7 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 
 			var blobTextures = [];
 			for (var i=0; i<16; i++) {
-				var tex = new THREE.ImageUtils.loadTexture('./motw/img/blob_'+ i +'.png', undefined, function() {
+				var tex = new THREE.ImageUtils.loadTexture('motw/img/blob_'+ i +'.png', undefined, function() {
 					self.loadingPercentageMax += 2;
 				}, function() {
 					self.loadingPercentageMax += 2;
@@ -214,10 +189,9 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 					scale: {type: 'f', value: 1},
 					map: {type: 't', value: null}
 				},
-				transparent: true,
+				transparent: false,
 				depthWrite: false
 			});
-			console.log(this.landscapeShaderMaterial)
 			this.canvasShaderMaterial = new THREE.ShaderMaterial({
 				vertexShader: [
 					'varying vec2 vUv;',
@@ -283,7 +257,7 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 			this.initDone = true;
 
 			this.initWebGL();
-			//this.initLandscape();
+			this.initLandscape();
 			this.setupEventListeners();
 			this.initToolbar();
 			//this.initSounds();
@@ -299,41 +273,8 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 			this.tick();
 		}
 
-
-		if ($scope.shouldSkipIntro) {
-
-			this.skipIntro();
-
-		} else {
-			var loadSomeMore = function() {
-				$scope.loadingPercentage = Math.min(self.loadingPercentageMax, $scope.loadingPercentage+1);
-				if ($scope.loadingPercentage < 100) {
-					$timeout(loadSomeMore, 60);
-				} else {
-					$scope.advanceIntro();
-				}
-			};
-
-			if (self.fontsLoaded) {
-				self.initIntro();
-				$scope.introState = 0;
-				$timeout(function(){
-					$scope.advanceIntro();
-					$timeout(loadSomeMore, 60);
-				}, 2000);
-			} else {
-				window.WebFontConfig.active = window.WebFontConfig.inactive = function() {
-					self.fontsLoaded = true;
-					self.initIntro();
-					$scope.introState = 0;
-					$timeout(function(){
-						$scope.advanceIntro();
-						$timeout(loadSomeMore, 60);
-					}, 2000);
-					$scope.$digest();
-				};
-			}
-		}
+        $scope.introState = 4;
+        this.introTime = this.introLength;
 	};
 
 	$scope.forceInit = function() {
@@ -425,12 +366,7 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 		var cameraMinZ = this.mapYearToLandscapeZ(-2e6) + 40;
 		var cameraMaxZ = this.mapYearToLandscapeZ(2015) + 40;
 
-		this.active = ($location.path().replace("/","") === '');
-		if (!this.objects || !this.active) {
-			this.renderer.clear();
-			window.requestAnimationFrame(this.tick);
-			return;
-		}
+		this.active = true;
 		var scene = this.scene;
 		var camera = this.camera;
 		var introState = $scope.introState;
@@ -584,8 +520,6 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 	};
 
 	this.tick = this.tick.bind(this);
-
-	this.active = ($location.path().replace("/","") === '');
 
 	this.setupEventListeners = function() {
 		window.onresize = function() {
@@ -938,12 +872,6 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 		};
 
 	};
-
-	this.skipIntro = function() {
-		$scope.introState = 4;
-		this.introTime = this.introLength;
-	};
-
 
 	this.initTerrain = function(LandscapeCoords) {
 		this.landscapeCoords = LandscapeCoords;
@@ -1905,546 +1833,6 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 
 		this.audioManager.setMuted(localStorage.audioMuted === 'true');
 	};
-
-
-
-
-	this.makeBlob = function(color, idx) {
-		var mat = self.canvasShaderMaterial.clone();
-		mat.uniforms = {
-			map: {type: 't', value: self.blobTextures[idx]},
-			color: {type: 'v3', value: new THREE.Vector3(color.r, color.g, color.b)}
-		};
-		var blob = new THREE.Mesh(
-			self.itemGeometry, mat
-		);
-		blob.texId = idx;
-		return blob;
-	};
-
-
-
-	// INTRO ANIMATION
-
-	this.initIntro = function() {
-
-		var introColors = [0xFCEE21, 0x009245, 0xF7931E, 0x006837, 0xFBB03B, 0xFFFFFF, 0x0071BC, 0xD9E021, 0x22B573, 0x8CC63F, 0x00A99D, 0x29ABE2];
-		introColors = introColors.map(function(c) { return new THREE.Color(c); });
-
-
-		var intersect = function(c, cs) {
-			var x0a = c.start.position.x;
-			var y0a = c.start.position.y;
-			var x1a = c.end.position.x;
-			var y1a = c.end.position.y;
-
-			var k_a = (y1a - y0a) / (x1a - x0a);
-			var b_a = y0a - k_a * x0a;
-
-			for (var i=0; i<cs.length; i++) {
-				var d = cs[i];
-
-				if (c.end.position === d.start.position || c.end.position === d.end.position ||
-					(c.start.position === d.start.position && c.end.position === d.end.position)
-				) {
-					//return true;
-				}
-
-				var x0b = d.start.position.x;
-				var y0b = d.start.position.y;
-				var x1b = d.end.position.x;
-				var y1b = d.end.position.y;
-
-				var k_b = (y1b - y0b) / (x1b - x0b);
-				var b_b = y0b - k_b * x0b;
-
-				if (k_a === k_b) {
-					continue;
-				}
-
-				if (c.start.position === d.start.position && tmpV.subVectors(d.end, d.start).dot(tmpV2.subVectors(c.end, c.start)) > 0.8) {
-					return true;
-				}
-
-				// k_a * x + b_a = k_b * x + b_b
-				// x * (k_a - k_b) + b_a - b_b = 0
-				var x = (b_b - b_a) / (k_a - k_b);
-
-				if (
-					x > Math.min(x0a, x1a) && x > Math.min(x0b, x1b) &&
-					x < Math.max(x0a, x1a) && x < Math.max(x0b, x1b)
-				) {
-					return true;
-				}
-
-			}
-			return false;
-		};
-
-		this.introBlobs = new THREE.Object3D();
-		this.introBlobs.frustumCulled = false;
-		this.scene.add(this.introBlobs);
-
-		this.loaderBlobs = new THREE.Object3D();
-		this.loaderBlobs.frustumCulled = false;
-		this.introBlobs.add(this.loaderBlobs);
-		for (var i=0; i<10; i++) {
-			var color = introColors[i % introColors.length];
-			var blob = this.makeBlob(color, i % this.blobTextures.length);
-			blob.velocity = new THREE.Vector3();
-			blob.scaleSpeed = 0;
-			blob.targetScale = 0.001;
-			blob.normalScale = 5 * (0.2 + loaderXorgen()*0.35);
-			blob.visible = false;
-			this.loaderBlobs.add(blob);
-			blob.frustumCulled = false;
-			blob.scale.multiplyScalar(blob.targetScale);
-			blob.position.set(loaderXorgen()-0.5, loaderXorgen()-0.5, loaderXorgen()*0.1+0.1).multiplyScalar(10);
-		}
-
-
-		var tmpV2 = new THREE.Vector3();
-		this.loaderBlobs.tick = function() {
-			var t = Date.now();
-			for (var i=0; i<this.children.length; i++) {
-				var a = this.children[i];
-				if (i * 9 < $scope.loadingPercentage-10) {
-					a.targetScale = a.normalScale;
-					a.visible = true;
-				}
-				a.violence = true;
-				if (self.introTime > 350) {
-					a.targetScale = shrinkPositions[i].scale * (1.5 + 0.5 * Math.sin(i*1.3+Math.pow(self.introTime/350, 2)));
-					if (self.introTime > 2750 && self.introTime < 3000) {
-						a.targetScale *= 1.8;
-					}
-				} else {
-					a.targetScale = shrinkPositions[i].scale * 2.0;
-					a.position.z = 0.1 + i*0.1;
-				}
-				// if (!a.exit) {					
-					a.velocity.x += (self.introTime+200)*0.0001 * (loaderXorgen() - 0.5) * 0.5;
-					a.velocity.y += (self.introTime+200)*0.0001 * (loaderXorgen() - 0.5) * 0.5;
-					a.velocity.z = 0;
-				// }
-				if (!a.visible) continue;
-				var sx = a.scale.x;
-				a.scaleSpeed += (a.targetScale - sx) * (a.violence ? 0.05 : 0.01);
-				sx += a.scaleSpeed;
-				a.scaleSpeed *= (a.violence ? 0.5 : 0.9);
-				a.scale.set(sx, sx, sx);
-				if (self.introTime < 350 && false) {
-					a.velocity.add(tmpV2.copy(a.position).multiplyScalar(a.violence ? -0.05 : -0.005));
-				} else if (self.introTime > 3000) {
-					if (!a.exit) {
-						a.exit = true;
-						a.velocity.set(loaderXorgen()-0.5, loaderXorgen()-0.5, 0);
-						a.velocity.normalize().multiplyScalar(10);
-					}
-				} else {
-					tmpV.copy(shrinkPositions[i].position).multiplyScalar(self.introTime > 350 ? 1 : 1.8);
-					a.velocity.add(tmpV2.subVectors(a.position, tmpV).multiplyScalar(self.introTime > 350 ? -0.25 : -0.005));
-					a.velocity.multiplyScalar(0.9);
-				}
-			}
-
-			for (var i=0; i<this.children.length; i++) {
-				var a = this.children[i];
-				if (!a.visible) continue;
-				if (false && loaderXorgen() < 0.02 && self.introTime < 350) {
-					a.velocity.x += (loaderXorgen() - 0.5);
-					a.velocity.y += 0.5*(loaderXorgen() - 0.5);
-				}
-				a.position.add(a.velocity);
-				a.position.z = i/100;
-
-				if (a.exit) continue;
-
-				a.velocity.multiplyScalar(0.95);
-			}
-		};
-
-		var gridKey = function(x,y) {
-			return Math.floor(x*5) + ':' + Math.floor(y*5);
-		};
-
-		// console.time('intro blob generation');
-
-		var v = new THREE.Vector3();
-		var ratio = (window.innerWidth/window.innerHeight);
-		var positionGrid = {};
-		var positions = [];
-		var fast = !(/Android|mobile|Trident|Edge/i).test(navigator.userAgent);
-		var blobCount = fast ? 12000 : 1000;
-		var blobSeparation = (blobCount < 8000 ? 1.9 : 0.8)*ratio;
-		for (var j=0; j<blobCount; j++) {
-			var position = new THREE.Vector3();
-			var scale = 1*(xorgen()*0.75 + 0.2);
-			var a = xorgen()*Math.PI*2;
-			if (ratio > 1) {
-				v.set(Math.cos(a), Math.sin(a) / ratio, 0);
-			} else {
-				v.set(Math.cos(a) * ratio, Math.sin(a), 0);
-			}
-
-			var minDist = 0;
-			var len = blobSeparation * Math.sqrt(j / Math.PI);
-			position.copy(v);
-			position.multiplyScalar(len);
-			while (positionGrid[gridKey(position.x, position.y)]) {
-				position.copy(v);
-				len += scale;
-				position.multiplyScalar( len );
-			}
-			positionGrid[gridKey(position.x, position.y)] = true;
-			positions.push({ position: position, scale: scale, color: introColors[j % introColors.length] });
-		}
-
-		// console.timeEnd('intro blob generation');
-
-		var shrinkPositions = [];
-		for (var j=0; j<10; j++) {
-			var position = new THREE.Vector3();
-			var scale = 3.5*(loaderXorgen()*0.15 + 0.1);
-			var a = 2*j/9.1213*Math.PI*2;
-			v.set(Math.cos(a), Math.sin(a), 0);
-			var minDist = 0;
-			var len = 0;
-			position.copy(v);
-			position.multiplyScalar(len);
-			while (minDist == 0.0) {
-				minDist = 10000.0;
-				for (var i=0; i<shrinkPositions.length; i++) {
-					var p = shrinkPositions[i];
-					var dist = position.distanceTo(p.position);
-					dist -= 0.5*scale;
-					dist -= 0.5*p.scale;
-					if (dist < minDist) {
-						minDist = dist;
-					}
-					while (dist < 0.1) {
-						position.copy(v);
-						len += 0.1;
-						position.multiplyScalar( len );
-						var dist = position.distanceTo(p.position);
-						dist -= 0.5*scale;
-						dist -= 0.5*p.scale;
-					}
-				}
-			}
-			shrinkPositions.push({ position: position, scale: scale, color: introColors[j % introColors.length] });
-			this.loaderBlobs.children[j].position.copy(position).normalize().multiplyScalar(2.5);
-		}
-
-		var growTree = function(start, positions, angle, connections, depth) {
-			var previousConnection = null;
-			var closePositions = positions.filter(function(p) {
-				var len = p.position.distanceTo(start.position);
-				return len > 1 && len < 10;
-			});
-			for (var i=0; i<5; i++) {
-				var a = angle + i/5 * Math.PI * 2;
-				var angleVec = new THREE.Vector3(Math.cos(a), Math.sin(a), 0).normalize();
-				var connection = {};
-				connection.start = start;
-				var tries = 0;
-				var len, dot;
-				// debugger;
-				var match = null;
-				for (var j=0; j<closePositions.length; j++) {
-					var p = closePositions[j];
-					connection.end = p;
-					tmpV2.subVectors(connection.end.position, connection.start.position).normalize();
-					dot = tmpV2.dot(angleVec);
-					if (dot < 0.5 && !intersect(connection, connections)) {
-						match = p;
-						break;
-					}
-				}
-				if (match) {
-					connection.end = match;
-					connections.push(connection);
-					if (previousConnection ) {
-						var cline = {start: previousConnection.end, end: connection.end};
-						if (!intersect(cline, connections)) {
-							connections.push(cline);
-						}
-					}
-					if (depth < 2) {
-						growTree(connection.end, positions, angle, connections, depth+1);
-					}
-					previousConnection = connection;
-				}
-			}
-			return connections;
-		};
-
-
-		// console.time('connection generation');
-
-		var introBlobConnections = new THREE.Object3D();
-		introBlobConnections.position.z = 0.1;
-		var connections = [];
-		var tmpV = new THREE.Vector3();
-		var angleVec = new THREE.Vector3();
-		var angle = 0;
-		var angleDist = function(x, y) {
-			return Math.atan2(Math.sin(x-y), Math.cos(x-y))
-		};
-		var connectionPathCount = fast ? 15 : 5;
-		for (var i=0; i<connectionPathCount; i++) {
-			var idx = i+(15*(Math.pow(Math.random(), 2-i/15)*positions.length/15) | 0);
-			idx %= positions.length;
-			var start = positions[idx];
-			start.finishedGrowing = true;
-			growTree(start, positions.filter(function(p){ 
-				var a = Math.atan2(p.position.y, p.position.x);
-				return p.color === start.color && Math.abs(angleDist(a, angle)) < Math.PI*2/3;
-			}), angle, connections, 0);
-			angle += Math.PI * (2 / 3 + (xorgen()-0.5) );
-		}
-
-		for (var i=0; i<connections.length; i++) {
-			var geo = new THREE.Geometry();
-			geo.vertices.push(new THREE.Vector3(0,0,0));
-			geo.vertices.push(new THREE.Vector3().subVectors(connections[i].end.position, connections[i].start.position));
-			var color = new THREE.Color(connections[i].end.color);
-			color.r = Math.min(1, color.r + 0.2);
-			color.g = Math.min(1, color.g + 0.2);
-			color.b = Math.min(1, color.b + 0.2);
-			var line = new THREE.Line(geo, new THREE.LineBasicMaterial({linewidth: 1, color: color}));
-			line.position.copy(connections[i].start.position);
-			line.scale.set(0.001, 0.001, 0.001);
-			line.targetScale = 0.001;
-			line.visible = false;
-			line.delay = 10 + i/10 + Math.pow(xorgen(), 2) * 250;
-			introBlobConnections.add(line);
-		}
-
-		// console.timeEnd('connection generation');
-
-		introBlobConnections.tick = function() {
-			for (var i=0; i<this.children.length; i++) {
-				var c = this.children[i];
-				if (connections[i].start.visible && connections[i].end.visible && connections[i].start.finishedGrowing) {
-					c.targetScale = 1;
-					c.visible = true;
-				} else {
-					c.targetScale = 0.001;
-				}
-				if (c.delay > 0) {
-					c.delay--;
-					continue;
-				}
-				var sx = c.scale.x;
-				sx += (c.targetScale - sx) * 0.2;
-				c.scale.set(sx, sx, sx);
-				connections[i].end.finishedGrowing = true;
-				if (sx > 0.95) {
-				} else if (sx < 0.01) {
-					c.visible = false;
-				}
-			}
-		};
-
-		this.introBlobs.add(introBlobConnections);
-
-		var particleShader =  {
-			attributes: {
-				position: {type: 'v3', value: []},
-				scale: {type: 'f', value: []},
-				color: {type: 'v3', value: []},
-				// textureID: {type: 'f', value: []},
-				uv: {type: 'v2', value: []}
-			},
-			uniforms: {},
-			vertexShader: [
-				// 'attribute float textureID;',
-				'attribute float scale;',
-
-				'varying vec3 vColor;',
-				// 'varying float vTexID;',
-				'varying vec2 vUv;',
-
-				'void main() {',
-				'	vColor = color;',
-				// '	vTexID = textureID;',
-				'	vUv = uv;',
-				'	vec3 relativeVertexPosition = vec3(2.0 * uv - 1.0, 0.0);',
-				'	vec3 v = position + 0.5 * scale * relativeVertexPosition;',
-				'	gl_Position = projectionMatrix * modelViewMatrix * vec4( v, 1.0 );',
-				'}'
-			].join('\n'),
-			fragmentShader: [
-				'varying vec3 vColor;',
-				'varying float vTexID;',
-				'varying vec2 vUv;',
-
-				'uniform sampler2D t;',
-
-				'void main() {',
-				'	gl_FragColor = vec4(vColor, texture2D(t, vUv).a);',
-				'}'
-			].join('\n'),
-
-			vertexColors: THREE.FaceColors,
-			side: THREE.DoubleSide,
-			opacity: 1,
-			transparent: true,
-			depthWrite: false 
-		};
-
-		this.introBlobs.createBlobs = function() {
-			var blobs = new THREE.Object3D();
-			var particleGeo = new THREE.BufferGeometry();
-			this.particlePositions = new Float32Array(6 * 3 * positions.length);
-			this.particleScales = new Float32Array(6 * 1 * positions.length);
-			this.particleColors = new Float32Array(6 * 3 * positions.length);
-			// this.particleTextureIDs = new Float32Array(6 * 1 * positions.length);
-			this.particleUVs = new Float32Array(6 * 2 * positions.length);
-			particleGeo.addAttribute('position', new THREE.BufferAttribute(this.particlePositions, 3));
-			particleGeo.addAttribute('scale', new THREE.BufferAttribute(this.particleScales, 1));
-			particleGeo.addAttribute('color', new THREE.BufferAttribute(this.particleColors, 3));
-			// particleGeo.addAttribute('textureID', new THREE.BufferAttribute(this.particleTextureIDs, 1));
-			particleGeo.addAttribute('uv', new THREE.BufferAttribute(this.particleUVs, 2));
-
-			var particleMaterial = new THREE.ShaderMaterial(particleShader);
-			particleMaterial.uniforms['t'] = { type: 't', value: self.blobTextures[0] };
-			// for (var i=0; i<self.blobTextures.length; i++) {
-			// 	particleMaterial.uniforms['t'+i] = { type: 't', value: self.blobTextures[i] };
-			// }
-
-			this.particles = new THREE.Mesh(
-				particleGeo, particleMaterial
-			);
-			this.particles.frustumCulled = false;
-
-			blobs.add(this.particles);
-			blobs.blobControllers = [];
-
-			for (var i=0, l=positions.length; i<l; i++) {
-				var p = positions[i];
-				p.visible = true;
-				var blob = self.makeBlob(p.color, 0 | (xorgen() * self.blobTextures.length));
-				blob.velocity = new THREE.Vector3();
-				var s = p.scale;
-				blob.targetScale = s;
-				blob.frustumCulled = false;
-				blob.scale.set(0.001, 0.001, 0.001);
-				blob.position.copy(p.position).multiplyScalar(0.0);
-				blob.position.z = -150*Math.random()-Math.sqrt(i/10);
-				blob.floatVec = new THREE.Vector3();
-				blob.positionObj = p.position;
-				blobs.blobControllers.push(blob);
-			}
-			this.blobs = blobs;
-		};
-		this.introBlobs.createBlobs();
-
-		this.introBlobs.tick = function() {
-			if ($scope.introState >= 1) {
-				self.loaderBlobs.tick();
-			}
-			if (self.introTime < 3000) return;
-			if (self.introTime > self.introLength) {
-				this.parent.remove(this);
-			}
-			if (self.introTime > 5000) {
-				introBlobConnections.tick();
-			}
-			this.blobs.position.z += 0.03 * Math.sqrt((self.introTime-3000) / 8000);
-			introBlobConnections.position.z += 0.03 * Math.sqrt((self.introTime-3000) / 8000);
-			for (var i=0; i<this.blobs.blobControllers.length; i++) {
-				if (!this.blobs.parent) {
-					this.add(this.blobs);
-				}
-				var c = this.blobs.blobControllers[i];
-				if (c.visible) {
-					var t = Date.now()/150 + i;
-					c.floatVec.set(Math.sin(1.3*t), Math.cos(t* ((i % 2) - 0.5)*2), 0);
-					c.floatVec.multiplyScalar(c.bounce ? 0.35 : 0);
-					c.velocity.add(c.floatVec);
-
-					if (c.countDown) {
-						c.velocity.y -= 0.1;
-					} else {
-						if (c.velocity.z === 0) {
-							tmpV.subVectors(c.positionObj, c.position).multiplyScalar(0.125);
-							c.velocity.add(tmpV);
-						}
-						var sx = c.scale.x;
-						sx += (c.targetScale - sx) * 0.25;
-						c.scale.set(sx, sx, sx);
-						c.velocity.multiplyScalar(0.99);
-						if (c.position.z > 0 || c.bounce) {
-							c.bounce = true;
-							c.velocity.multiplyScalar(0.1);
-							tmpV.subVectors(c.positionObj, c.position).multiplyScalar(0.9);
-							c.velocity.add(tmpV);
-						}
-					}
-					c.position.add(c.velocity);
-				} else if (i === this.blobs.blobControllers.length-1) {
-					this.parent.remove(this);
-				}
-			}
-
-			for (var i = 0; i<this.blobs.blobControllers.length; i++) {
-				if (i < Math.pow(Math.max(0, self.introTime-11200), 1.6)) {
-					if (positions[i].visible) {
-						this.blobs.blobControllers[i].velocity.set((Math.random()-0.5)*8.0, Math.random(), -(6*(0.5-Math.random())));
-						this.blobs.blobControllers[i].countDown = 200;
-						positions[i].visible = false;
-					}
-				} else {
-					break;
-				}
-			}
-
-			var pos = this.particlePositions;
-			var sca = this.particleScales;
-			var col = this.particleColors;
-			// var tex = this.particleTextureIDs;
-			var uv = this.particleUVs;
-			var off,soff,coff,toff,uoff;
-			off = soff = coff = toff = uoff = 0;
-
-			if (!this.geometryInitialized) {
-				this.geometryInitialized = true;
-				for (var i=0; i<this.blobs.blobControllers.length; i++) {
-					var b = this.blobs.blobControllers[i];
-					for (var j=0; j<6; j++) {
-						col[coff++] = b.material.uniforms.color.value.x;
-						col[coff++] = b.material.uniforms.color.value.y;
-						col[coff++] = b.material.uniforms.color.value.z;
-						// tex[toff++] = b.texId;
-						uv[uoff++] = j % 2;
-						uv[uoff++] = (j < 2 || j === 5) ? 0 : 1;
-					}
-				}
-				var geo = this.particles.geometry;
-				geo.attributes.color.needsUpdate = true;
-				// geo.attributes.textureID.needsUpdate = true;
-				geo.attributes.uv.needsUpdate = true;
-			}
-
-			for (var i=0; i<this.blobs.blobControllers.length; i++) {
-				var b = this.blobs.blobControllers[i];
-				for (var j=0; j<6; j++) {
-					pos[off++] = b.position.x;
-					pos[off++] = b.position.y;
-					pos[off++] = b.position.z;
-					sca[soff++] = b.scale.x;
-				}
-			}
-			var geo = this.particles.geometry;
-			geo.attributes.position.needsUpdate = true;
-			geo.attributes.scale.needsUpdate = true;
-		};
-	};
-
-
-
 
 	this.init();
 
