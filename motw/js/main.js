@@ -118,12 +118,8 @@ motw.factory('Objects', function($sce, $http) {
 									zoom: obj.zoomLevel
 								};
 							} else {
-								//console.log('duplicate object!', obj.bullet);
+								console.log('duplicate object!', obj.bullet);
 							}
-
-							obj.audioClips.forEach(function(audio) {
-								audio.mainURL = $sce.trustAsResourceUrl(audio.mainURL);
-							});
 
 							obj.youTubeIds = [];
 							if (obj.youtubeVideo && isYouTubeID(obj.youtubeVideo)) {
@@ -144,23 +140,6 @@ motw.factory('Objects', function($sce, $http) {
 });
 
 motw.controller('staticController', function($scope, $location, $sce, $timeout) {
-	$scope.share = function(mode){
-		var share_url = "";
-		if (mode === 'twitter') {
-			share_url = 'https://twitter.com/intent/tweet?text='+encodeURIComponent("I'm exploring #MuseumOfTheWorld by @britishmuseum and @GoogleUK. See how our history is connected ")+'&url=';
-		} else if (mode === "facebook") {
-			share_url = "https://www.facebook.com/sharer/sharer.php?u="; 
-		} else if (mode === 'google') {
-			share_url = "https://plus.google.com/share?url=";
-		} else if (mode === 'email') {
-			share_url = "mailto:info@example.com?subject=Museum%20of%20the%20World&body="+encodeURIComponent("I'm exploring #MuseumOfTheWorld by @britishmuseum and @GoogleUK. See how our history is connected ");
-		} else {
-			return;
-		}
-		share_url += encodeURIComponent($location.absUrl());
-		window.open(share_url, 'Share this', 'width=500,height=350');			
-	};
-
 	$scope.closeObject = function() {
 		$location.path("/");
 		// document.title = 'Museum of the World';
@@ -191,8 +170,6 @@ motw.controller('objectController', function($scope, $routeParams, $location, $s
 
 	$scope.closeObject = function() {
 		$location.path("/");
-		resumeBGAudio();
-		// document.title = 'Museum of the World';
 	};
 
 	$timeout(function() {
@@ -431,54 +408,6 @@ motw.controller('objectController', function($scope, $routeParams, $location, $s
 		$scope.videoURL = null;
 	};
 
-	$scope.playAudio = function(audio) {
-		for (var i=0; i < $scope.object.audioClips.length; i++) {
-			$scope.object.audioClips[i].playing = false;
-		}
-		var audioEl;
-		var audioEls = document.querySelectorAll("audio");
-		for (var i=0; i<audioEls.length; i++) {
-			if (audioEls[i].getAttribute('src') === audio.mainURL.toString()) {
-				audioEl = audioEls[i];
-				break;
-			}
-		}
-		if (audioEl) {
-			if (audioEl.paused) {
-				audioEl.play();
-				audio.playing = true;
-				stopBGAudio();
-			} else {
-				audioEl.pause();
-				audio.playing = false;
-				resumeBGAudio();
-			}
-		}
-	};
-
-	$scope.share = function(mode){
-		var share_url = "";
-		if (mode === 'twitter') {
-			share_url = 'https://twitter.com/intent/tweet?text='+encodeURIComponent("I'm exploring #MuseumOfTheWorld by @britishmuseum and @GoogleUK. See how our history is connected ")+'&url=';
-		} else if (mode === "facebook") {
-			share_url = "https://www.facebook.com/sharer/sharer.php?u="; 
-		} else if (mode === 'google') {
-			share_url = "https://plus.google.com/share?url=";
-		} else if (mode === 'email') {
-			share_url = "mailto:info@example.com?subject=Museum%20of%20the%20World&body="+encodeURIComponent("I discovered this object at The Museum of the World. Explore our connected history ");
-		} else {
-			return;
-		}
-		share_url += encodeURIComponent($location.absUrl());
-		var win = window.open(share_url, 'Share this', 'width=500,height=350');			
-    ga('send', {
-      hitType: 'social',
-      socialNetwork: mode,
-      socialAction: 'like',
-      socialTarget: $location.absUrl() 
-    });
-	};
-
 	$scope.highResImage = function(url) {
 		return (url || '').replace(/s1024$/, 's2048');
 	};
@@ -490,10 +419,6 @@ motw.controller('objectController', function($scope, $routeParams, $location, $s
 	Objects.get(function(objectArr, objectIndex) {
 		$scope.objects = objectIndex;
 		$scope.object = objectIndex[$routeParams.bullet];
-
-		$scope.object.audioClips.forEach(function(audio) {
-			audio.playing = false;
-		});
 
 		$scope.images = [];
 		var images = [];

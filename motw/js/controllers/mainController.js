@@ -5,18 +5,6 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 		inactive: function(){ self.fontsLoaded = true; }
 	};
 
-	window.resumeBGAudio = function() {
-		if (self.audioManager && self.audioManager.mainVolume) {
-			self.audioManager.masterVolume.gain.value = 1;
-		}
-	};
-
-	window.stopBGAudio = function() {
-		if (self.audioManager && self.audioManager.mainVolume) {
-			self.audioManager.masterVolume.gain.value = 0;
-		}
-	};
-
 	var self = this;
 
 	var localStorage = window.localStorage || {};
@@ -82,25 +70,11 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 	$scope.goToYear = function(year) {
 		self.cameraZMotion = 0;
 		self.cameraZTarget = self.mapYearToLandscapeZ(year) + 50;
-	}
+	};
 
 	$scope.advanceIntro = function(force) {
 		$scope.introState = Math.min(4, $scope.introState + 1);
 	};
-
-	$scope.toggleMuted = function() {
-		if (self.audioManager) {
-			self.audioManager.toggleMuted();
-		}
-	};
-
-	$scope.getMuted = function() {
-		if (self.audioManager) {
-			return self.audioManager.getMuted();
-		}
-		return true;
-	};
-
 
 	var xorgen = new xor4096('heabllo.');
 	var loaderXorgen = new xor4096('alflog.');
@@ -260,15 +234,7 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 			this.initLandscape();
 			this.setupEventListeners();
 			this.initToolbar();
-			//this.initSounds();
 			window.onresize();
-
-			$http.get('motw/js/test.json').then(function(object) {
-				self.initTerrain(object.data);
-				self.loadingPercentageMax += 50;
-			}, function(err) {
-				console.log("Failed to load terrain geometry.")
-			});
 
 			this.tick();
 		}
@@ -307,11 +273,11 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 			this.cameraYOffset = 1;
 		}
 
+        this.itemGeometry = new THREE.PlaneBufferGeometry(1, 1);
+        this.initScene();
+
 		renderer.domElement.id = 'main-canvas';
 		document.body.appendChild(renderer.domElement);
-
-		this.itemGeometry = new THREE.PlaneBufferGeometry(1, 1);
-		this.initScene();
 
 		return true;
 	};
@@ -374,10 +340,6 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 		var cameraY = this.cameraY;
 		var cameraZMotion = this.cameraZMotion;
 		var cameraZTarget = this.cameraZTarget;
-
-		if (this.introTime > 3000 && this.audioManager) {
-			this.audioManager.start();
-		}
 
 		if (this.introTime < this.introLength + 16) {
 			introTime = Math.max(0, this.introTime - (this.introLength - 3000));
@@ -663,13 +625,6 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 					obj = self.findObjectUnderEvent(ev);
 					if (obj) {
 						obj.hovered = true;
-						if (obj !== previousHovered && (obj.soundLastPlayed == null || (Date.now() - obj.soundLastPlayed) > 200)) {
-							obj.soundLastPlayed = Date.now() 
-							if (obj.soundIndex === undefined) {
-								obj.soundIndex = -4*obj.position.y;
-							}
-							self.audioManager.playSoundEffect(obj.soundIndex);
-						}
 					}
 				}
 			}
@@ -941,7 +896,6 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 
 	this.initLandscape = function() {
 		this.lanes = this.createLanes();
-        console.log(this.lanes)
 		this.dividers = this.lanes.dividers;
 		this.lines = this.lanes.lines;
 		this.linesPlane = this.lanes.linesPlane;
@@ -1046,12 +1000,6 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 
 		if (this.largerZThanToolbar !== largerZThanToolbar) {
 			this.largerZThanToolbar = largerZThanToolbar;
-			if (self.audioManager && self.introTime > self.introLength && !this.disabled) {
-				if (this.soundIndex === undefined) {
-					this.soundIndex = -4*this.position.y;
-				}
-				self.audioManager.playSoundEffect(this.soundIndex);
-			}
 		}
 
 		var idx = this.parent.children.indexOf(blob);
@@ -1677,161 +1625,6 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 		this.labels.visible = false;
 		this.scene.add(this.toolBar3D);
 		this.labelScene.add(this.labels);
-	};
-
-
-
-	// Sound system
-
-	this.initSounds = function() {
-		var audioContext;
-		try {
-			window.AudioContext = window.AudioContext || window.webkitAudioContext;
-			audioContext = new window.AudioContext();
-		} catch (e) {
-			// console.log("initSounds: No Web Audio API support");
-			this.loadingPercentageMax += 10;
-			return;
-		}
-		var __self = this;
-		this.audioManager = {
-			context: audioContext,
-			mainVolume: audioContext.createGain(),
-			masterVolume: audioContext.createGain(),
-
-			backgroundURL: '/img/sounds/background.mp3',
-			explosionURL: '/img/sounds/explosion.mp3',
-			soundEffectURLs: [
-				'/img/sounds/01.mp3',
-				'/img/sounds/02.mp3',
-				'/img/sounds/03.mp3',
-				'/img/sounds/04.mp3',
-				'/img/sounds/05.mp3',
-				'/img/sounds/06.mp3',
-				'/img/sounds/07.mp3',
-				'/img/sounds/08.mp3',
-				'/img/sounds/09.mp3'
-			],
-
-			loadSound: function(soundFileName, onload, onerror) {
-				var ctx = this.context;
-				var mainVolume = this.mainVolume;
-				var self = this;
-
-				// Create an object with a sound source and a volume control.
-				var sound = {};
-				sound.source = ctx.createBufferSource();
-				sound.volume = ctx.createGain();
-
-				// Connect the sound source to the volume control.
-				sound.source.connect(sound.volume);
-				// Hook up the sound volume control to the main volume.
-				sound.volume.connect(mainVolume);
-				
-				var request = new XMLHttpRequest();
-				request.open("GET", soundFileName, true);
-				request.responseType = "arraybuffer";
-				request.onload = function(e) {
-
-					// Create a buffer from the response ArrayBuffer.
-					ctx.decodeAudioData(this.response, function onSuccess(buffer) {
-						sound.buffer = buffer;
-
-						// Make the sound source use the buffer.
-						sound.source.buffer = sound.buffer;
-
-						onload.call(self, sound);
-					}, function onFailure() {
-						onerror.call(self, sound);
-						console.log("Decoding the audio buffer failed");
-					});
-				};
-				request.onerror = function() {
-					onerror.call(self, sound);
-				}
-				request.send();
-			},
-
-			soundEffects: [],
-			soundsPlaying: 0,
-			playSoundEffect: function(index) {
-				if (!this.started || this.soundsPlaying > 5) {
-					return;
-				}
-				index = Math.floor(index) % this.soundEffects.length;
-				if (index < 0) {
-					index += this.soundEffects.length;
-				}
-				var sound = this.soundEffects[index];
-				if (sound) {
-					var node = this.context.createBufferSource();
-					var gain = this.context.createGain();
-					gain.gain.value = Math.random()*0.1+0.1;
-					node.buffer = sound.buffer;
-					node.connect(gain);
-					gain.connect(sound.volume);
-					node.start(this.context.currentTime);
-					var self = this;
-					this.soundsPlaying++;
-					setTimeout(function() {
-						self.soundsPlaying--;
-					}, 500);
-				}
-			},
-
-			playRandomSoundEffect: function() {
-				this.playSoundEffect(this.soundEffects.length * Math.random());
-			},
-
-			getMuted: function() {
-				return this.mainVolume.gain.value === 0;
-			},
-
-			setMuted: function(muted) {
-				this.mainVolume.gain.value = muted ? 0 : 1;
-				localStorage.audioMuted = !!muted;
-			},
-
-			toggleMuted: function() {
-				this.setMuted( !this.getMuted() );
-			},
-
-			start: function() {
-				if (!this.started) {
-					this.started = true;
-					this.masterVolume.connect(this.context.destination);
-					this.mainVolume.connect(this.masterVolume);
-					if (this.explosionSound) {
-						this.explosionSound.source.start(this.context.currentTime);
-					}
-					if (this.backgroundSound) {
-						this.backgroundSound.source.start(this.context.currentTime);
-						this.backgroundSound.volume.gain.setValueAtTime(1, this.context.currentTime + (__self.introLength-3000)/1000);
-						this.backgroundSound.volume.gain.linearRampToValueAtTime(0, this.context.currentTime + (__self.introLength+3000)/1000);
-					}
-				}
-			}
-		};
-
-		this.audioManager.loadSound(this.audioManager.backgroundURL, function(sound) {
-			this.backgroundSound = sound;
-		});
-
-		this.audioManager.loadSound(this.audioManager.explosionURL, function(sound) {
-			this.explosionSound = sound;
-			__self.loadingPercentageMax += 10;
-		}, function() {
-			__self.loadingPercentageMax += 10;			
-		});
-
-		for (var i=0; i<this.audioManager.soundEffectURLs.length; i++) {
-			var url = this.audioManager.soundEffectURLs[i];
-			this.audioManager.loadSound(url, function(sound) {
-				this.soundEffects.push(sound);
-			});
-		}
-
-		this.audioManager.setMuted(localStorage.audioMuted === 'true');
 	};
 
 	this.init();
