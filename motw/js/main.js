@@ -63,7 +63,7 @@ motw.directive("ngTouchend", function () {
 
 
 motw.factory('Objects', function($sce, $http) {
-	var objectURL = './motw/api/overview.json';
+	var objectURL = './motw/api/overview-test.json';
 
 	var getListeners = [];
 

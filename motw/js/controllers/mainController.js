@@ -11,12 +11,10 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 	$scope.cookieWarningVisible = localStorage.cookieWarningVisible === 'false' ? false : true;
 
 	$scope.categoryNames = [
-		'Art and design',
-		'Living and dying',
-		'Power and identity',
-		'Religion and belief',
-		'Trade and conflict'
-	];
+		'Javascript',
+		'HTML',
+		'CSS'
+		];
 
 	$scope.scrollHelp = false;
 	$scope.showIntroHelp = (localStorage.showIntroHelp === 'false' ? false : true);
@@ -114,7 +112,7 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 		if (!this.initDone) {
 			var self = this;
 
-			this.geographies = ['Africa', 'Americas', 'Asia', 'Europe', 'Oceania'];
+			this.geographies = ['Javascript', 'HTML', 'CSS'];
 			this.geoLane = {};
 			this.geographies.forEach(function(e,i) { self.geoLane[e] = i; });
 			this.colors = [

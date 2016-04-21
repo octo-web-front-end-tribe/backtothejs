@@ -1,0 +1,29 @@
+[
+  {
+    "zoomLevel": 5,
+    "categoryName": "Javascript",
+    "bullet": "web-born",
+    "subCultureName": "Web",
+    "cultureName": "Javascript",
+    "images": [],
+    "title": "Naissance du web",
+    "dateCreated": 1990,
+    "descriptionHTML": "blabla",
+    "thumbnailURL": "http://home.cern/sites/home.web.cern.ch/files/image/topic-stub/image/bernerslee.jpg",
+    "mainImageURL": "http://home.cern/sites/home.web.cern.ch/files/image/topic-stub/image/bernerslee.jpg"
+  },
+  {
+    "zoomLevel": 5,
+    "categoryName": "Javascript",
+    "bullet": "ajax",
+    "subCultureName": "AJAX",
+    "cultureName": "Javascript",
+    "images": [],
+    "title": "Ajax",
+    "dateCreated": 2010,
+    "lat": 18.0679476,
+    "descriptionHTML": "blabla",
+    "thumbnailURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/AJAX_logo_by_gengns.svg/2000px-AJAX_logo_by_gengns.svg.png",
+    "mainImageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/AJAX_logo_by_gengns.svg/2000px-AJAX_logo_by_gengns.svg.png"
+  }
+]
