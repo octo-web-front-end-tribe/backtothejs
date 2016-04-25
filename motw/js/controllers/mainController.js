@@ -215,11 +215,6 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 			});
 		}
 
-		$scope.cameraMotionType = 'onlyTerrain';
-		$scope.cameraMotionType = 'resizing2DToolBar';
-		$scope.cameraMotionType = 'fixed2DToolBar';
-		$scope.cameraMotionType = '3DToolBar';
-
 		$scope.hoverInfoX = 0;
 		$scope.hoverInfoY = 0;
 
@@ -233,7 +228,6 @@ angular.module('motw').controller('mainController', function($scope, $sce, $loca
 			this.setupEventListeners();
 			this.initToolbar();
 			window.onresize();
-
 			this.tick();
 		}
 
