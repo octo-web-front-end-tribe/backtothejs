@@ -1439,7 +1439,7 @@ angular.module('motw').controller('mainController', function ($scope, $sce, $loc
 
             var lineContainer = new THREE.Object3D();
             var line = this.makeLine(timelineGeometry, lineMaterial);
-            line.scale.set(30, 1, 1);
+            line.scale.set(20, 1, 1);
             lineContainer.position.set(0, -10, z);
             lineContainer.add(line);
             dividers.add(lineContainer);
@@ -1464,7 +1464,7 @@ angular.module('motw').controller('mainController', function ($scope, $sce, $loc
             };
 
             var text = new THREE.Mesh(new THREE.PlaneBufferGeometry(textCanvas.width / 25, textCanvas.height / 25), mat);
-            text.position.set(-30 + 5, -1, 0);
+            text.position.set(-20 + 5, -1, 0);
 
             lineContainer.add(text);
 
@@ -1473,9 +1473,9 @@ angular.module('motw').controller('mainController', function ($scope, $sce, $loc
                     var f = (j / 10)
                     var tickZ = (1 - f) * lastYearZ + f * z;
                     yearTickGeometry.vertices.push(
-                        new THREE.Vector3(-18, -10, tickZ),
-                        new THREE.Vector3(-18 + (j === 5 ? -2 : -1), -10, tickZ),
-                        new THREE.Vector3(-18, -10, tickZ)
+                        new THREE.Vector3(-11, -10, tickZ),
+                        new THREE.Vector3(-11 + (j === 5 ? -2 : -1), -10, tickZ),
+                        new THREE.Vector3(-11, -10, tickZ)
                     );
                 }
             }
@@ -1491,8 +1491,8 @@ angular.module('motw').controller('mainController', function ($scope, $sce, $loc
         line.position.set((6 / 5) * 6 * (i - (itemLanes - 1) / 2) - (6 / 5) * 3, -10, 0);
         lines.add(line);
 
-        var yearTicks = this.makeLine(yearTickGeometry, lineMaterial);
-        lanes.add(yearTicks);
+        /*var yearTicks = this.makeLine(yearTickGeometry, lineMaterial);
+        lanes.add(yearTicks);*/
 
         lanes.add(lines);
         lanes.lines = lines;
