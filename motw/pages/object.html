@@ -1,0 +1,18 @@
+<div id="object-details" ng-class="{ visible: visible }" class="ng-scope visible">
+    <h2>
+        <span ng-bind-html="object.title" class="ng-binding"></span> |
+        <span ng-bind-html="object.cultureName" class="object-title-text ng-binding"></span>
+    </h2>
+    <div class="close-button" ng-click="closeObject()">
+    </div>
+    <div class="object-content">
+        <div class="column">
+            <div class="object-image">
+                <img ng-src="{{ object.mainImageURL }}" ng-click="openSlideshowOverlay(object.mainImageURL)">
+            </div>
+        </div>
+        <div class="column">
+            <div class="object-description ng-binding" ng-bind-html="object.descriptionHTML"></div>
+        </div>
+    </div>
+</div>

@@ -30,7 +30,7 @@ angular.module('motw').controller('mainController', function ($scope, $sce, $loc
         {start: 2010, end: 2008, yearLength: 10},
         {start: 2008, end: 2006, yearLength: 10},
         {start: 2006, end: 1990, yearLength: 10},
-        {start: 1990, end: -5e6, yearLength: 0.0002}
+        {start: 1990, end: 1970, yearLength: 0.0002}
     ];
 
     this.introLength = 14000;
@@ -1259,7 +1259,7 @@ angular.module('motw').controller('mainController', function ($scope, $sce, $loc
             var d = Math.min(iv.start - iv.end, iv.start - year);
             z += d * iv.yearLength;
         }
-        return 1900 * 0.2 + 100 * 0.3 + 50 * 0.4 + 50 * 0.8 - z;
+        return 100 * 0.3 + 50 * 0.4 + 50 * 0.8 - z;
     };
 
     this.createTimeArrow = function () {
@@ -1414,29 +1414,15 @@ angular.module('motw').controller('mainController', function ($scope, $sce, $loc
 
         var lastYearZ = null;
 
-        var years = [
-            1990, 1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001,
-            2002,
-            2003,
-            2004,
-            2005,
-            2006,
-            2007,
-            2008,
-            2009,
-            2010,
-            2011,
-            2012,
-            2013,
-            2014,
-            2015,
-            2016
-        ];
+        var years = [];
+        for(var i=1990; i<=2016; i++) {
+            years.push(i);
+        }
 
         for (var i = 0; i < years.length; i++) {
             var year = years[i];
             var z = this.mapYearToLandscapeZ(year);
-
+            console.log(year, z);
             var lineContainer = new THREE.Object3D();
             var line = this.makeLine(timelineGeometry, lineMaterial);
             line.scale.set(20, 1, 1);

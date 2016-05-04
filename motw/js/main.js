@@ -3,11 +3,11 @@ var motw = angular.module('motw', ['ngRoute', 'ngSanitize']);
 motw.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider
 		.when('/about', {
-			templateUrl: '/pages/about.html',
+			templateUrl: '/motw/pages/about.html',
 			controller: 'staticController'
 		})
 		.when('/object/:bullet', {
-			templateUrl: '/pages/object.html',
+			templateUrl: '/motw/pages/object.html',
 			controller: 'objectController'
 		})
 		;
@@ -90,15 +90,6 @@ motw.factory('Objects', function($sce, $http) {
 						self.objectIndex = {};
 						objectArr.forEach(function(obj) {
 							obj.categoryName = (obj.categoryName + '').toLowerCase();
-							if (obj.categoryName === 'jewellery') {
-								obj.categoryName = 'trade and conflict';
-							} else if (obj.categoryName === 'weapon') {
-								obj.categoryName = 'art and design';
-							} else if (obj.categoryName === 'tool') {
-								obj.categoryName = 'living and dying';
-							} else if (obj.categoryName === 'art') {
-								obj.categoryName = 'power and identity'
-							}
 							var cat = self.objectsByCategory[obj.categoryName];
 							if (!cat) {
 								cat = self.objectsByCategory[obj.categoryName] = [];

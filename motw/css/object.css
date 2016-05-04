@@ -13,11 +13,8 @@
 	border: 0;
 	padding: 80px;
 	width: 880px;
-	height: 460px;
-
 	margin-left: -520px;
 	margin-top: -310px;
-
 	transition: 0.5s;
 	z-index: 3;
 }
