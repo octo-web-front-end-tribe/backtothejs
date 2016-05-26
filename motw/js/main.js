@@ -3,11 +3,11 @@ var motw = angular.module('motw', ['ngRoute', 'ngSanitize']);
 motw.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider
 		.when('/about', {
-			templateUrl: '/motw/pages/about.html',
+			templateUrl: '/pages/about.html',
 			controller: 'staticController'
 		})
 		.when('/object/:bullet', {
-			templateUrl: '/motw/pages/object.html',
+			templateUrl: '/pages/object.html',
 			controller: 'objectController'
 		})
 		;
@@ -63,7 +63,7 @@ motw.directive("ngTouchend", function () {
 
 
 motw.factory('Objects', function($sce, $http) {
-	var objectURL = './motw/api/overview-test.json';
+	var objectURL = '/api/overview-test.json';
 
 	var getListeners = [];
 

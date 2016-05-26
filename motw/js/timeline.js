@@ -2,7 +2,7 @@ angular.module('motw').factory('Timeline', function() {
 
     var blobTextures = [];
     for (var i = 0; i < 16; i++) {
-        var tex = new THREE.ImageUtils.loadTexture('/motw/img/blob_' + i + '.png', undefined, function () {
+        var tex = new THREE.ImageUtils.loadTexture('/img/blob_' + i + '.png', undefined, function () {
             self.loadingPercentageMax += 2;
         }, function () {
             self.loadingPercentageMax += 2;

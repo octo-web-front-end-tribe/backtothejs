@@ -8,7 +8,7 @@ html, body {
 	width: 100%;
 	height: 100%;
 	overflow: hidden;
-	background: #66685D;
+	background: #002D42;
 }
 
 noscript > * {
@@ -289,21 +289,20 @@ noscript > * {
 #main-title {
 	display: block;
 	position: absolute;
+	color: white;
 	left: 50%;
 	top: 0px;
 	margin-left: -115px;
-
 	width: 229px;
 	height: 84px;
 	color: transparent;
 	line-height: 20px;
 
 	background: url(../img/logo.png) 0 0 / 100% 100% no-repeat;
-
 	white-space: pre-line;
 	text-align: center;
 
-	font-size: 20px;
+	font-size: 36px;
 }
 
 #categories {
@@ -413,31 +412,6 @@ noscript > * {
 	opacity: 0.6;
 	transition: 0.3s;
 }
-
-#google-cultural-institute {
-	background: url(../img/google-cultural-institute.svg) 100% 100% / 100% no-repeat;
-	display: block;
-	position: absolute;
-	bottom: 14px;
-	right: 14px;
-	width: 56px;
-	height: 32px;
-	cursor: pointer;
-	z-index: 10;
-}
-
-#the-british-museum {
-	background: url(../img/the-british-museum.svg) 0 100% / 100% no-repeat;
-	display: block;
-	position: absolute;
-	bottom: 14px;
-	left: 14px;
-	width: 107px;
-	height: 35px;
-	cursor: pointer;
-	z-index: 10;
-}
-
 
 #main-menu {
 	position: absolute;
@@ -602,20 +576,6 @@ noscript > * {
 	opacity: 1;
 }
 
-.categories-weapon {
-	background: url(../img/category-weapon.svg) 5px 50% / 24px 25px no-repeat;
-}
-.categories-tool {
-	background: url(../img/category-tool.svg) 5px 50% / 21px 21px no-repeat;
-}
-.categories-artwork {
-	background: url(../img/category-artwork.svg) 5px 50% / 24px 23px no-repeat;
-}
-.categories-jewellery {
-	background: url(../img/category-jewellery.svg) 5px 50% / 23px 26px no-repeat;
-}
-
-
 #main-share-buttons {
 	position: absolute;
 	left: 0px;
@@ -663,24 +623,6 @@ noscript > * {
 
 #main-share-buttons > div:hover {
 	opacity: 1;
-}
-
-.share-button-google {
-	background: url(../img/share-google.svg) 0 0 / 100% 100% no-repeat;
-	width: 25px;
-	height: 16px;
-}
-
-.share-button-twitter {
-	background: url(../img/share-twitter.svg) 0 0 / 100% 100% no-repeat;
-	width: 19px;
-	height: 16px;
-}
-
-.share-button-facebook {
-	background: url(../img/share-facebook.svg) 0 0 / 100% 100% no-repeat;
-	width: 16px;
-	height: 16px;
 }
 
 .share-button-email {

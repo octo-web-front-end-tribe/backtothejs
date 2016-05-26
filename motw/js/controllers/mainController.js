@@ -164,7 +164,7 @@ angular.module('motw').controller('mainController', function ($scope, $sce, $loc
 
         renderer.setSize(width, height);
 
-        renderer.setClearColor(0x66685D, 1.0);
+        renderer.setClearColor(0x002D42, 1.0);
 
         this.renderer = renderer;
 
@@ -670,6 +670,19 @@ angular.module('motw').controller('mainController', function ($scope, $sce, $loc
                     ) - ev.wheelDelta * 0.15;
             }
         };
+
+        if(window.DeviceMotionEvent) {
+            window.addEventListener("devicemotion", function(ev) {
+                if (!self.active) return;
+                if ($scope.introState < 4) {
+                    if (ev.wheelDelta < 0) {
+                        $scope.$digest();
+                    }
+                } else if (self.introTime >= self.introLength + 16) {
+                    self.cameraZTarget = ( self.cameraZTarget || self.camera.position.z ) - ev.accelerationIncludingGravity.z * 0.15;
+                }
+            }, false);
+        }
 
         var tmpMat4 = new THREE.Matrix4();
         var tmpMat4B = new THREE.Matrix4();

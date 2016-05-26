@@ -1,6 +1,6 @@
 describe('Protractor Demo App', function() {
     it('should have a title and display content in popin', function() {
-        browser.get('http://localhost:63342/motw/index.html');
+        browser.get('http://localhost:3000/');
         expect(browser.getTitle()).toEqual('Back to the Javascript');
         browser.actions().click(element.all(by.css('rect')).get(0).getWebElement()).perform();
         browser.driver.sleep(2000);

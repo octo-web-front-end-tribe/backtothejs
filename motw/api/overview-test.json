@@ -1,4 +1,42 @@
-[
+[ {
+     "zoomLevel": 5,
+     "categoryName": "CSS",
+     "bullet": "first-css-milestone",
+     "subCultureName": "Web",
+     "cultureName": "CSS",
+     "images": [],
+     "title": "Les premiers développements",
+     "dateCreated": 1995,
+     "descriptionHTML": "<p>La première proposition de Cascading HTML Style Sheets formulée par Håkon Wium Lie retient l'attention de Dave Raggett, qui est alors le principal éditeur du projet de spécification HTML 3.0. Partisan d'un HTML purement structurel, il encourage la publication d'un document de travail CHSS, afin que celui-ci puisse être présenté et discuté à la seconde conférence internationale sur le WWW (Mosaic and the Web, Chicago, 1994). Il modifie également avec Håkon Lie le navigateur Arenan. 3, afin de permettre de tester ce langage, et en fait la démonstration lors de la troisième conférence WWW en 1995.</p>",
+     "thumbnailURL": "http://thejoe.it/wordpress/wp-content/uploads/2010/06/css-codice.jpg",
+     "mainImageURL": "http://thejoe.it/wordpress/wp-content/uploads/2010/06/css-codice.jpg"
+  },
+  {
+    "zoomLevel": 5,
+    "categoryName": "HTML",
+    "bullet": "origin-html-milestone",
+    "subCultureName": "Web",
+    "cultureName": "HTML",
+    "images": [],
+    "title": "Origine : SGML",
+    "dateCreated": 1992,
+    "descriptionHTML": "<p>HTML est une des trois inventions à la base du World Wide Web, avec le Hypertext Transfer Protocol (HTTP) et les adresses web. HTML a été inventé pour permettre d'écrire des documents hypertextuels liant les différentes ressources d’Internet avec des hyperliens. Aujourd’hui, ces documents sont appelés « page web ». En août 1991, lorsque Tim Berners-Lee annonce publiquement le web sur Usenet, il ne cite que le langage SGML, mais donne l’URL d’un document de suffixe .html. Dans son livre Weaving the web3, Tim Berners-Lee décrit la décision de baser HTML sur SGML comme étant aussi « diplomatique » que technique : techniquement, il trouvait SGML trop complexe, mais il voulait attirer la communauté hypertexte qui considérait que SGML était le langage le plus prometteur pour standardiser le format des documents hypertexte.</p>",
+    "thumbnailURL": "http://www.e-infoaegis.com/images/sgml.jpg",
+    "mainImageURL": "http://www.e-infoaegis.com/images/sgml.jpg"
+  },
+  {
+    "zoomLevel": 5,
+    "categoryName": "HTML",
+    "bullet": "html2.0-milestone",
+    "subCultureName": "Web",
+    "cultureName": "HTML",
+    "images": [],
+    "title": "HTML 2.0",
+    "dateCreated": 1996,
+    "descriptionHTML": "<p>En mars 1995, le World Wide Web Consortium (W3C) nouvellement fondé propose le résultat de ses recherches sur HTML+ : le brouillon HTML 3.0. Il comprend notamment le support des tables, des figures et des expressions mathématiques. Ce brouillon expire le 28 septembre 1995 sans donner de suites directes. Fin 1995, le RFC 1866 décrivant HTML 2.0 est finalisé. Le principal éditeur est Dan Connolly. Ce document décrit HTML tel qu’il existait avant juin 1994, donc sans les nombreuses additions de Netscape Navigator.</p>",
+    "thumbnailURL": "http://bacsoftwareconsulting.com/blog/wp-content/uploads/2015/05/html-2.jpg",
+    "mainImageURL": "http://bacsoftwareconsulting.com/blog/wp-content/uploads/2015/05/html-2.jpg"
+  },
   {
     "zoomLevel": 5,
     "categoryName": "Javascript",
@@ -87,8 +125,8 @@
     "title": "NodeJS",
     "dateCreated": 2009,
     "descriptionHTML": "<p>Invention par Ryan Lienhart Dahl de NodeJS. Le mec était saoulé que la barre de téléchargement de Flickr ne soit pas précise. Il s’est dit qu’il allait faire une lib à base de traitement asynchrone toussa-toussa. Finalement il a pondu une plateforme (depuis forkée et déforkée).</p>",
-    "thumbnailURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/AJAX_logo_by_gengns.svg/2000px-AJAX_logo_by_gengns.svg.png",
-    "mainImageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/AJAX_logo_by_gengns.svg/2000px-AJAX_logo_by_gengns.svg.png"
+    "thumbnailURL": "http://www.yomeva.com/wp-content/uploads/2014/03/nodejs_yomeva.png",
+    "mainImageURL": "http://www.yomeva.com/wp-content/uploads/2014/03/nodejs_yomeva.png"
   }
 
 ]
