@@ -2,5 +2,8 @@ language: node_js
 node_js:
   - 4.2.1
 deploy:
+  provider: heroku
   api_key:
     secure: FlK7tT0rwhTgpW7xHW1fIvUIb0burjKAGJ11n/XQHNVnWhWxgOztUdaZrVx3SQR1I8MHo8gB9IL8Yl5QyRi9dRFLuCKYzFdrqSZiIWnFbxpYABsKyqigQQozul8i5qPuH41aMaN5fARFVq0oYiT5K2EUzZRh5C8Lj7PF98eVhJnDF+Gkm2x42vkf1tPzJlTuJms8bbgzv4/6j9XORWjdpvf/Syu/BdGgGujMQvncRGx+EkQci+i/J+m7Eenrgm83cBqd0GxbvdMjep2rAZUT/z2lm+HmgFfXnaS6L06qBtIPLCHUcYY+v9w2l/g+lAdlbSu6SxBzArIcfD6HPhYvgC1thG3RG+gjGosUq1zim407ml9NqixSxXWLx4AieaYYaQu7E7iTeHzulNjGap+9bDGrMU+Y8q+dtJb1GmAWl8OgaMDgwmtj9c4G45LpB19BmBPdJvbAZA+wHXHe7hZ9j4uDV32xuc3hXu9a2zerZvOSluMOPeRJfEebwaeYxoQsCuGMM0b6e5nNvPl2PUj/alriQAlTxUBKZfE8vDIuF5XWpywix6QZ0PNrHJBf6vTB5X3J+n1i0Nc2eizBkl12bFL0RIpkeXGkXu3t7gtrKvtZ7P/fLMeeoJ4ZmlHFEoZ4HH2ULdxobCkkBDnduNgOiA2YUg5EJZvOYrVTjxJpLnM=
+  on:
+    repo: octo-web-front-end-tribe/backtothejs
