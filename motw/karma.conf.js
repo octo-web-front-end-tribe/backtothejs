@@ -10,6 +10,7 @@ module.exports = function(config){
             'js/**/*.js',
             'test/unit/*_test.js'
         ],
+        singleRun: true,
         autoWatch : true,
         frameworks: ['mocha', 'chai'],
         browsers : ['PhantomJS'],
